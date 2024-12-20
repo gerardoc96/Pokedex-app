@@ -1,33 +1,32 @@
-
-let squirtle = {
+const squirtle = {
   name: 'Squirtle',
   height: 0.5,
-  evolution: wartortle,
+  evolution: null, //placeholder
   moves: ['Tail whip', 'Tackle'],
 };
 
-let wartortle = {
+const wartortle = {
   name: 'Wartortle',
   height: 1,
-  evolution: blastoise,
+  evolution: null,
   moves: ['Bubble', 'Water Gun'],
 };
 
-let vulpix = {
+const vulpix = {
   name: 'Vulpix',
   height: 0.6,
-  evolution: ninetales,
+  evolution: null,
   moves: ['Tail whip', 'Ember'],
 };
 
-let ninetales = {
+const ninetales = {
   name: 'Ninetales',
   height: 1.1,
   evolution: null,
   moves: ['Nasty plot', 'Safeguard'],
 };
 
-let pokemonList = [
+const pokemonList = [
   squirtle,
   wartortle,
   vulpix,
