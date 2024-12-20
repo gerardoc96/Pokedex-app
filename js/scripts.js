@@ -33,6 +33,9 @@ const pokemonList = [
   ninetales,
 ];
 
+//added evolutions after objects are fully created to avoid circular dependency
+squirtle.evolution = wartortle;
+vulpix.evolution = ninetales;
 
 const pokemonListUl = document.getElementById("pokemon-list");
 
