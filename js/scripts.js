@@ -1,41 +1,59 @@
-const squirtle = {
-  name: 'Squirtle',
-  height: 0.5,
-  evolution: null, //placeholder
-  moves: ['Tail whip', 'Tackle'],
-};
+const pokemonRepository = (function () {
+  //Pokemon Objects
+  const squirtle = {
+    name: 'Squirtle',
+    height: 0.5,
+    evolution: null, //placeholder
+    moves: ['Tail whip', 'Tackle'],
+  };
 
-const wartortle = {
-  name: 'Wartortle',
-  height: 1,
-  evolution: null,
-  moves: ['Bubble', 'Water Gun'],
-};
+  const wartortle = {
+    name: 'Wartortle',
+    height: 1,
+    evolution: null,
+    moves: ['Bubble', 'Water Gun'],
+  };
 
-const vulpix = {
-  name: 'Vulpix',
-  height: 0.6,
-  evolution: null,
-  moves: ['Tail whip', 'Ember'],
-};
+  const vulpix = {
+    name: 'Vulpix',
+    height: 0.6,
+    evolution: null,
+    moves: ['Tail whip', 'Ember'],
+  };
 
-const ninetales = {
-  name: 'Ninetales',
-  height: 1.1,
-  evolution: null,
-  moves: ['Nasty plot', 'Safeguard'],
-};
+  const ninetales = {
+    name: 'Ninetales',
+    height: 1.1,
+    evolution: null,
+    moves: ['Nasty plot', 'Safeguard'],
+  };
 
-const pokemonList = [
-  squirtle,
-  wartortle,
-  vulpix,
-  ninetales,
-];
+  // Array of Pokemon
+  const pokemonList = [
+    squirtle,
+    wartortle,
+    vulpix,
+    ninetales,
+  ];
 
-//added evolutions after objects are fully created to avoid circular dependency
-squirtle.evolution = wartortle;
-vulpix.evolution = ninetales;
+  //added evolutions after objects are fully created to avoid circular dependency
+  squirtle.evolution = wartortle;
+  vulpix.evolution = ninetales;
+
+  function add(pokemon) {
+    pokemonList.push(pokemon);
+  }
+
+  function getAll() {
+    return pokemonList;
+  }
+
+  return {
+    add,
+    getAll
+  }
+
+})();
 
 const pokemonListUl = document.getElementById("pokemon-list");
 
@@ -91,10 +109,10 @@ function createBigMessage() {
 
 // Main function to append all list items to the Pokemon list
 function populatePokemonList(pokemonList, pokemonListUl) {
-  pokemonList.forEach(function (pokemon) {
+  pokemonRepository.getAll().forEach(function (pokemon) {
     let listItem = createListItem(pokemon);
     pokemonListUl.appendChild(listItem);
   });
 }
 
-populatePokemonList(pokemonList, pokemonListUl);
+populatePokemonList(pokemonRepository.getAll(), pokemonListUl);
