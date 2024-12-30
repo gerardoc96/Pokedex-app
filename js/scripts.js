@@ -40,8 +40,22 @@ const pokemonRepository = (function () {
   squirtle.evolution = wartortle;
   vulpix.evolution = ninetales;
 
+  // Add the Pokemon to the list
   function add(pokemon) {
-    pokemonList.push(pokemon);
+    if (
+      pokemon &&
+      typeof pokemon === 'object' &&
+      'name' in pokemon &&
+      'height' in pokemon &&
+      'evolution' in pokemon &&
+      'moves' in pokemon &&
+      Array.isArray(pokemon.moves) &&
+      (pokemon.evolution === null)
+    ) {
+      pokemonList.push(pokemon);
+    } else {
+      console.error('Invalid Pokémon object. Ensure it has name, height, evolution(must = null), and moves(is an array).');
+    }
   }
 
   function getAll() {
