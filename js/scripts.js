@@ -39,7 +39,7 @@ vulpix.evolution = ninetales;
 
 const pokemonListUl = document.getElementById("pokemon-list");
 
-for (let i = 0; i < pokemonList.length; i++) {
+pokemonList.forEach(function (pokemon) {
   let listItem = document.createElement("li");
 
   // Base text for pokemon's name
@@ -47,18 +47,18 @@ for (let i = 0; i < pokemonList.length; i++) {
 
   //elements for the name and height
   let pokemonName = document.createElement("div");
-  pokemonName.textContent = pokemonList[i].name;
+  pokemonName.textContent = pokemon.name;
   pokemonName.classList.add("pokemon-list__name")
 
   let pokemonHeight = document.createElement("div");
-  pokemonHeight.textContent = `Height: ${pokemonList[i].height}m`;
+  pokemonHeight.textContent = `Height: ${pokemon.height}m`;
   pokemonHeight.classList.add("pokemon-list__height")
 
   listItem.appendChild(pokemonName);
   listItem.appendChild(pokemonHeight);
 
   //highlights pokemon taller than 1m
-  if (pokemonList[i].height > 1) {
+  if (pokemon.height > 1) {
     let bigMessage = document.createElement("div");
     bigMessage.textContent = "Wow, that's big!"
     bigMessage.classList.add("pokemon-list__big");
@@ -66,5 +66,5 @@ for (let i = 0; i < pokemonList.length; i++) {
   }
 
   pokemonListUl.appendChild(listItem);
-}
+});
 
