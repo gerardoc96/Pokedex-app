@@ -39,32 +39,62 @@ vulpix.evolution = ninetales;
 
 const pokemonListUl = document.getElementById("pokemon-list");
 
-pokemonList.forEach(function (pokemon) {
+
+// Function to create a list item element
+function createListItem(pokemon) {
+
   let listItem = document.createElement("li");
+  listItem.classList.add("pokemon-list__item");
 
-  // Base text for pokemon's name
-  listItem.classList.add("pokemon-list__item")
-
-  //elements for the name and height
-  let pokemonName = document.createElement("div");
-  pokemonName.textContent = pokemon.name;
-  pokemonName.classList.add("pokemon-list__name")
-
-  let pokemonHeight = document.createElement("div");
-  pokemonHeight.textContent = `Height: ${pokemon.height}m`;
-  pokemonHeight.classList.add("pokemon-list__height")
+  let pokemonName = createPokemonName(pokemon.name);
+  let pokemonHeight = createPokemonHeight(pokemon.height);
 
   listItem.appendChild(pokemonName);
   listItem.appendChild(pokemonHeight);
 
-  //highlights pokemon taller than 1m
-  if (pokemon.height > 1) {
-    let bigMessage = document.createElement("div");
-    bigMessage.textContent = "Wow, that's big!"
-    bigMessage.classList.add("pokemon-list__big");
+  if (isPokemonBig(pokemon.height)) {
+    let bigMessage = createBigMessage();
     listItem.appendChild(bigMessage);
   }
 
-  pokemonListUl.appendChild(listItem);
-});
+  return listItem;
+}
 
+// function to create the Pokemon's name element
+function createPokemonName(name) {
+  let nameElement = document.createElement("div");
+  nameElement.textContent = name;
+  nameElement.classList.add("pokemon-list__name");
+  return nameElement;
+}
+
+// function to create the Pokemon's height element
+function createPokemonHeight(height) {
+  let heightElement = document.createElement("div");
+  heightElement.textContent = `Height: ${height} m`;
+  heightElement.classList.add("pokemon-list__height");
+  return heightElement;
+}
+
+// fuction to determine if pokemon is big
+function isPokemonBig(height) {
+  return height > 1;
+}
+
+// function to create "wow..." message
+function createBigMessage() {
+  let bigMessageElement = document.createElement("div");
+  bigMessageElement.textContent = "Wow, that's big!";
+  bigMessageElement.classList.add("pokemon-list__big");
+  return bigMessageElement;
+}
+
+// Main function to append all list items to the Pokemon list
+function populatePokemonList(pokemonList, pokemonListUl) {
+  pokemonList.forEach(function (pokemon) {
+    let listItem = createListItem(pokemon);
+    pokemonListUl.appendChild(listItem);
+  });
+}
+
+populatePokemonList(pokemonList, pokemonListUl);
