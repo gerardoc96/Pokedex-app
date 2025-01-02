@@ -92,12 +92,12 @@ function createListItem(pokemon) {
   return listItem;
 }
 
-// function to create the Pokemon's name element
+// function to create the Pokemon's name button
 function createPokemonName(name) {
-  let nameElement = document.createElement("div");
-  nameElement.textContent = name;
-  nameElement.classList.add("pokemon-list__name");
-  return nameElement;
+  let nameButton = document.createElement("button");
+  nameButton.textContent = name;
+  nameButton.classList.add("pokemon-list__name-button");
+  return nameButton;
 }
 
 // function to create the Pokemon's height element
