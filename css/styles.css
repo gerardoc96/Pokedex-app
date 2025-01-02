@@ -33,7 +33,6 @@ h3 {
 }
 
 .pokemon-list__item,
-.pokemon-list__name,
 .pokemon-list__height {
   width: 25;
 }
@@ -41,4 +40,18 @@ h3 {
 .pokemon-list__big {
   font-weight: bold;
   color: green;
+}
+
+.pokemon-list__name-button {
+  background-color: #179bb3;
+  border: none;
+  padding: 8px 12px;
+  font-size: 16px;
+  color: #000;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.pokemon-list__name-button:hover {
+  background-color: #f5c518;
 }
