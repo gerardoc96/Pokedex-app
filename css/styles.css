@@ -55,3 +55,7 @@ h3 {
 .pokemon-list__name-button:hover {
   background-color: #f5c518;
 }
+
+.hidden {
+  display: none;
+}

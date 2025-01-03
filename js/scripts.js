@@ -78,26 +78,49 @@ function createListItem(pokemon) {
   let listItem = document.createElement("li");
   listItem.classList.add("pokemon-list__item");
 
-  let pokemonName = createPokemonName(pokemon.name);
-  let pokemonHeight = createPokemonHeight(pokemon.height);
+  let pokemonName = createPokemonName(pokemon, listItem);
 
   listItem.appendChild(pokemonName);
-  listItem.appendChild(pokemonHeight);
-
-  if (isPokemonBig(pokemon.height)) {
-    let bigMessage = createBigMessage();
-    listItem.appendChild(bigMessage);
-  }
 
   return listItem;
 }
 
 // function to create the Pokemon's name button
-function createPokemonName(name) {
+function createPokemonName(pokemon, listItem) {
   let nameButton = document.createElement("button");
-  nameButton.textContent = name;
+  nameButton.textContent = pokemon.name;
   nameButton.classList.add("pokemon-list__name-button");
+
+  // event listener to display information on click
+  nameButton.addEventListener("click", function () {
+    let detailsContainer = listItem.querySelector(".pokemon-list__details");
+
+    if (!detailsContainer) {
+      detailsContainer = createPokemonDetails(pokemon);
+      listItem.appendChild(detailsContainer);
+    }
+
+    detailsContainer.classList.toggle("hidden");
+
+  });
+
   return nameButton;
+}
+
+// function to create Pokemon's detials
+function createPokemonDetails(pokemon) {
+  let detailsContainer = document.createElement("div");
+  detailsContainer.classList.add("pokemon-list__details", "hidden");
+
+  let pokemonHeight = createPokemonHeight(pokemon.height);
+  detailsContainer.appendChild(pokemonHeight);
+
+  if (isPokemonBig(pokemon.height)) {
+    let bigMessage = createBigMessage();
+    detailsContainer.appendChild(bigMessage);
+  }
+
+  return detailsContainer;
 }
 
 // function to create the Pokemon's height element
