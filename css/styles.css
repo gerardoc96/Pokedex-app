@@ -27,7 +27,7 @@ h3 {
 #pokemon-list {
   list-style-type: none;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(10, 1fr);
   grid-gap: 20px;
 
 }
@@ -56,6 +56,15 @@ h3 {
   background-color: #f5c518;
 }
 
-.hidden {
+.pokemon-details {
   display: none;
+  margin-top: 10px;
+  padding: 10px;
+  background: #8a8989b7;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.pokemon-details p {
+  margin: 5px 0;
 }
