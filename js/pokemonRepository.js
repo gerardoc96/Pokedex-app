@@ -1,65 +1,77 @@
 const pokemonRepository = (function () {
 
-  // Array of Pokemon
-  const pokemonList = [
-    squirtle = {
-      name: 'Squirtle',
-      height: 0.5,
-      evolution: null, //placeholder
-      moves: ['Tail whip', 'Tackle'],
-    },
+  const pokemonList = [];
 
-    wartortle = {
-      name: 'Wartortle',
-      height: 1,
-      evolution: null,
-      moves: ['Bubble', 'Water Gun'],
-    },
-
-    vulpix = {
-      name: 'Vulpix',
-      height: 0.6,
-      evolution: null,
-      moves: ['Tail whip', 'Ember'],
-    },
-
-    ninetales = {
-      name: 'Ninetales',
-      height: 1.1,
-      evolution: null,
-      moves: ['Nasty plot', 'Safeguard'],
-    },
-  ];
-
-  //added evolutions after objects are fully created to avoid circular dependency
-  pokemonList[0].evolution = pokemonList[1];
-  pokemonList[2].evolution = pokemonList[3];
+  const apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150'
 
   // Add the Pokemon to the repository
   function add(pokemon) {
-    if (
-      pokemon &&
-      typeof pokemon === 'object' &&
-      'name' in pokemon &&
-      'height' in pokemon &&
-      'evolution' in pokemon &&
-      'moves' in pokemon &&
-      Array.isArray(pokemon.moves) &&
-      (pokemon.evolution === null)
-    ) {
+
+    if (typeof pokemon === 'object' && 'name' in pokemon && 'detailsUrl' in pokemon) {
+
       pokemonList.push(pokemon);
+
     } else {
-      console.error('Invalid Pokémon object. Ensure it has name, height, evolution(must = null), and moves(is an array).');
+
+      console.error('Invalid Pokémon object. Ensure it has the right properties.');
+
     }
   }
 
+  function loadList() {
+    pokemonUI.showLoadingMessage();
+    return fetch(apiUrl).then(function (response) {
+      return response.json();
+
+    }).then(function (json) {
+      pokemonUI.hideLoadingMessage();
+      json.results.forEach(function (item) {
+
+        let pokemon = {
+          name: item.name,
+          detailsUrl: item.url
+        };
+        add(pokemon);
+      });
+
+    }).catch(function (e) {
+      pokemonUI.hideLoadingMessage();
+      console.error(e);
+    });
+
+  }
+
+  function loadDetails(pokemon) {
+    pokemonUI.showLoadingMessage();
+    return fetch(pokemon.detailsUrl)
+
+      .then(function (response) {
+        return response.json();
+
+      }).then(function (details) {
+        pokemonUI.hideLoadingMessage();
+        pokemon.imgUrl = details.sprites.front_default;
+        pokemon.height = details.height;
+        pokemon.type = details.types.map(function (typeInfo) {
+          return typeInfo.type.name;
+        });
+
+      }).catch(function (e) {
+        pokemonUI.hideLoadingMessage();
+        console.error(e);
+      });
+
+
+  }
   function getAll() {
     return pokemonList;
   }
 
   return {
     add,
-    getAll
-  }
+    getAll,
+    loadList,
+    loadDetails
+  };
 
 })();

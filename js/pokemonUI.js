@@ -19,67 +19,65 @@ const pokemonUI = (function () {
 
     // event listener to display information on click
     nameButton.addEventListener("click", function () {
-      let detailsContainer = listItem.querySelector(".pokemon-list__details");
-
-      if (!detailsContainer) {
-        detailsContainer = createPokemonDetails(pokemon);
-        listItem.appendChild(detailsContainer);
-      }
-
-      detailsContainer.classList.toggle("hidden");
-
+      showDetails(pokemon, this);
     });
 
     return nameButton;
   }
 
-  // function to create Pokemon's detials
-  function createPokemonDetails(pokemon) {
-    let detailsContainer = document.createElement("div");
-    detailsContainer.classList.add("pokemon-list__details", "hidden");
+  function showDetails(pokemon, buttonElement) {
+    pokemonRepository.loadDetails(pokemon).then(function () {
+      // Find the parent list item of the clicked button
+      let listItem = buttonElement.parentNode;
 
-    let pokemonHeight = createPokemonHeight(pokemon.height);
-    detailsContainer.appendChild(pokemonHeight);
+      // Check if a details container already exists in this list item
+      let detailsContainer = listItem.querySelector('.pokemon-details');
+      if (!detailsContainer) {
+        detailsContainer = document.createElement('div');
+        detailsContainer.classList.add('pokemon-details');
+        listItem.appendChild(detailsContainer);
+      }
 
-    if (isPokemonBig(pokemon.height)) {
-      let bigMessage = createBigMessage();
-      detailsContainer.appendChild(bigMessage);
-    }
+      // Populate the details
+      detailsContainer.innerHTML = `
+        <p><strong>${pokemon.name}</strong></p>
+        <img src="${pokemon.imgUrl}" alt="${pokemon.name}">
+        <p>Type: ${pokemon.type.join(', ')}</p>
+        <p>Height: ${pokemon.height}m</p>
+      `;
 
-    return detailsContainer;
+      // Toggle visibility
+      detailsContainer.style.display =
+        detailsContainer.style.display === 'block' ? 'none' : 'block';
+    });
   }
-
-  // function to create the Pokemon's height element
-  function createPokemonHeight(height) {
-    let heightElement = document.createElement("div");
-    heightElement.textContent = `Height: ${height} m`;
-    heightElement.classList.add("pokemon-list__height");
-    return heightElement;
-  }
-
-  // fuction to determine if pokemon is big
-  function isPokemonBig(height) {
-    return height > 1;
-  }
-
-  // function to create "wow..." message
-  function createBigMessage() {
-    let bigMessageElement = document.createElement("div");
-    bigMessageElement.textContent = "Wow, that's big!";
-    bigMessageElement.classList.add("pokemon-list__big");
-    return bigMessageElement;
-  }
-
   // Render the Pokemon list in the UI
   function populatePokemonList(pokemonList, listElement) {
+    listElement.innerHTML = "";
     pokemonList.forEach(function (pokemon) {
       let listItem = createListItem(pokemon);
       listElement.appendChild(listItem);
     });
   }
 
+  function showLoadingMessage() {
+    const loadingMessage = document.createElement('div');
+    loadingMessage.id = 'loading-message';
+    loadingMessage.textContent = 'Loading...';
+    document.body.appendChild(loadingMessage);
+  }
+
+  function hideLoadingMessage() {
+    const loadingMessage = document.getElementById('loading-message');
+    if (loadingMessage) {
+      loadingMessage.remove();
+    }
+  }
+
   return {
     populatePokemonList,
+    showLoadingMessage,
+    hideLoadingMessage
   };
 
 })();
