@@ -59,6 +59,14 @@ const pokemonUI = (function () {
 
     // Add modal content to modal container
     document.body.appendChild(modalContainer);
+
+    // Add event listener to close modal pressing 'Esc'
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        hideModal(modalContainer);
+        document.removeEventListener("keydown", onKeyPress);
+      }
+    });
   }
 
   function hideModal(modalContainer) {
