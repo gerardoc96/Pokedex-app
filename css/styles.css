@@ -124,3 +124,27 @@ h3 {
   cursor: pointer;
   border-radius: 5px;
 }
+
+@media (max-width: 1230px) {
+  #pokemon-list {
+    grid-template-columns: repeat(8, 1fr);
+  }
+}
+
+@media (max-width: 1030px) {
+  #pokemon-list {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (max-width: 770px) {
+  #pokemon-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 570px) {
+  #pokemon-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
