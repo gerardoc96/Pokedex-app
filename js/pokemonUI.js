@@ -30,6 +30,12 @@ const pokemonUI = (function () {
 
   // Create and display modal
   function showModal(pokemon) {
+
+    // check if modal is already present
+    if (document.querySelector(".modal__container")) {
+      return;
+    }
+
     //create modal container
     let modalContainer = document.createElement("div");
     modalContainer.classList.add("modal__container");
