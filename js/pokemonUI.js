@@ -12,22 +12,24 @@ const pokemonUI = (function () {
   }
 
   // Create a button of Pokemon name
-  function createPokemonName(pokemon, listItem) {
+  function createPokemonName(pokemon) {
     let nameButton = document.createElement("button");
     nameButton.textContent = pokemon.name;
     nameButton.classList.add("pokemon-list__name-button");
 
     // event listener to display information on click
     nameButton.addEventListener("click", function () {
-      showDetails(pokemon, this);
-      showModal();
+      pokemonRepository.loadDetails(pokemon)
+        .then(function () {
+          showModal(pokemon);
+        });
     });
 
     return nameButton;
   }
 
   // Create and display modal
-  function showModal() {
+  function showModal(pokemon) {
     //create modal container
     let modalContainer = document.createElement("div");
     modalContainer.classList.add("modal__container");
@@ -44,6 +46,13 @@ const pokemonUI = (function () {
       hideModal(modalContainer);
     });
 
+    // Add Pokemon details to modal
+    modalContent.innerHTML += `
+      <h2>${pokemon.name}</h2>
+      <img src="${pokemon.imgUrl}" alt="${pokemon.name}">
+      <p>Type: ${pokemon.type.join(', ')}</p>
+      <p>Height: ${pokemon.height}m</p>`;
+
     //Append close button and content to container
     modalContent.appendChild(modalCloseButton);
     modalContainer.appendChild(modalContent);
@@ -56,32 +65,6 @@ const pokemonUI = (function () {
     modalContainer.remove();
   }
 
-  function showDetails(pokemon, buttonElement) {
-    pokemonRepository.loadDetails(pokemon).then(function () {
-      // Find the parent list item of the clicked button
-      let listItem = buttonElement.parentNode;
-
-      // Check if a details container already exists in this list item
-      let detailsContainer = listItem.querySelector('.pokemon-details');
-      if (!detailsContainer) {
-        detailsContainer = document.createElement('div');
-        detailsContainer.classList.add('pokemon-details');
-        listItem.appendChild(detailsContainer);
-      }
-
-      // Populate the details
-      detailsContainer.innerHTML = `
-        <p><strong>${pokemon.name}</strong></p>
-        <img src="${pokemon.imgUrl}" alt="${pokemon.name}">
-        <p>Type: ${pokemon.type.join(', ')}</p>
-        <p>Height: ${pokemon.height}m</p>
-      `;
-
-      // Toggle visibility
-      detailsContainer.style.display =
-        detailsContainer.style.display === 'block' ? 'none' : 'block';
-    });
-  }
   // Render the Pokemon list in the UI
   function populatePokemonList(pokemonList, listElement) {
     listElement.innerHTML = "";
