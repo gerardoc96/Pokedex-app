@@ -20,9 +20,40 @@ const pokemonUI = (function () {
     // event listener to display information on click
     nameButton.addEventListener("click", function () {
       showDetails(pokemon, this);
+      showModal();
     });
 
     return nameButton;
+  }
+
+  // Create and display modal
+  function showModal() {
+    //create modal container
+    let modalContainer = document.createElement("div");
+    modalContainer.classList.add("modal__container");
+
+    // Create modal content
+    let modalContent = document.createElement("div");
+    modalContent.classList.add("modal__content");
+
+    // Add close button
+    let modalCloseButton = document.createElement("button");
+    modalCloseButton.textContent = "Close";
+    modalCloseButton.classList.add("modal__close-button");
+    modalCloseButton.addEventListener("click", function () {
+      hideModal(modalContainer);
+    });
+
+    //Append close button and content to container
+    modalContent.appendChild(modalCloseButton);
+    modalContainer.appendChild(modalContent);
+
+    // Add modal content to modal container
+    document.body.appendChild(modalContainer);
+  }
+
+  function hideModal(modalContainer) {
+    modalContainer.remove();
   }
 
   function showDetails(pokemon, buttonElement) {
