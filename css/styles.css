@@ -68,3 +68,36 @@ h3 {
 .pokemon-details p {
   margin: 5px 0;
 }
+
+.modal__container {
+  width: 100px;
+  height: 100px;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal__content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 80%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.modal__close-button {
+  background-color: #f5c518;
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #ffffff;
+  cursor: pointer;
+  border-radius: 5px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
