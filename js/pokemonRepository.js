@@ -4,7 +4,40 @@ const pokemonRepository = (function () {
 
   const apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150'
 
-  // Add the Pokemon to the repository
+  // returns the list of all pokemon
+  function getAll() {
+    return pokemonList;
+  }
+
+  // Converts API response to JSON
+  function responseToJson(response) {
+    return response.json();
+  }
+
+  // fetches and processes the list of Pokemon from the API
+  function loadList() {
+    pokemonUI.showLoadingMessage();
+    return fetch(apiUrl)
+      .then(responseToJson)
+      .then(processPokemonList)
+      .catch(logError)
+  }
+
+  function processPokemonList(json) {
+    pokemonUI.hideLoadingMessage();
+    json.results.forEach(addPokemonFromList);
+  }
+
+  // Extract and add Pokemon information to the repository
+  function addPokemonFromList(item) {
+    let pokemon = {
+      name: item.name,
+      detailsUrl: item.url
+    };
+    add(pokemon);
+  }
+
+  // Validation function for adding pokemon to the repository
   function add(pokemon) {
 
     if (typeof pokemon === 'object' && 'name' in pokemon && 'detailsUrl' in pokemon) {
@@ -15,40 +48,18 @@ const pokemonRepository = (function () {
     }
   }
 
+  // Fetches and processes details for each Pokemon
   function loadDetails(pokemon) {
     pokemonUI.showLoadingMessage();
     return fetch(pokemon.detailsUrl)
-      .then(fetchPokemonDetails)
+      .then(responseToJson)
       .then(function (details) {
         processPokemonDetails(details, pokemon);
       })
-      .catch(handleLoadListError);
+      .catch(logError);
   }
 
-  function loadList() {
-    pokemonUI.showLoadingMessage();
-    return fetch(apiUrl)
-      .then(fetchPokemonList)
-      .then(processPokemonList)
-      .catch(handleLoadListError)
-  }
-
-  function getAll() {
-    return pokemonList;
-  }
-
-  function getPokemonType(typeInfo) {
-    return typeInfo.type.name;
-  }
-
-  function fetchPokemonList(response) {
-    return response.json();
-  }
-
-  function fetchPokemonDetails(response) {
-    return response.json();
-  }
-
+  // Fetches the specific details for each Pokemon
   function processPokemonDetails(details, pokemon) {
     pokemonUI.hideLoadingMessage();
     pokemon.imgUrl = details.sprites.front_default;
@@ -56,25 +67,15 @@ const pokemonRepository = (function () {
     pokemon.type = details.types.map(getPokemonType);
   }
 
-  function processPokemonList(json) {
-    pokemonUI.hideLoadingMessage();
-    json.results.forEach(addPokemonFromList);
+  function getPokemonType(typeInfo) {
+    return typeInfo.type.name;
   }
 
-
-  function addPokemonFromList(item) {
-    let pokemon = {
-      name: item.name,
-      detailsUrl: item.url
-    };
-    add(pokemon);
-  }
-
-  function handleLoadListError(e) {
+  // Centralized error log
+  function logError(e) {
     pokemonUI.hideLoadingMessage();
     console.error(e);
   }
-
 
   return {
     add,
