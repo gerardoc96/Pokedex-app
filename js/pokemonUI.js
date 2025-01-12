@@ -67,6 +67,13 @@ const pokemonUI = (function () {
         document.removeEventListener("keydown", onKeyPress);
       }
     });
+
+    // Add event listener to close modal when clicking outside of the modal content
+    modalContainer.addEventListener("click", function (event) {
+      if (!modalContent.contains(event.target)) {
+        hideModal(modalContainer);
+      }
+    });
   }
 
   function hideModal(modalContainer) {
