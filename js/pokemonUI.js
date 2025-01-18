@@ -1,23 +1,31 @@
 const pokemonUI = (function () {
-
-  // Create a list item of Pokemon
-  function createListItem(pokemon) {
-    let listItem = document.createElement("li");
-    listItem.classList.add("pokemon-list__item");
-
-    let pokemonNameButton = createPokemonName(pokemon, listItem);
-    listItem.appendChild(pokemonNameButton);
-
-    return listItem;
+  // Render the Pokemon list in the UI
+  function populatePokemonList(pokemonList, listElement) {
+    listElement.innerHTML = "";
+    pokemonList.forEach(function (pokemon) {
+      let listItem = createListItem(pokemon);
+      listElement.appendChild(listItem);
+    });
   }
 
-  // Create a button of Pokemon name
-  function createPokemonName(pokemon) {
-    let nameButton = document.createElement("button");
-    nameButton.textContent = pokemon.name;
-    nameButton.classList.add("pokemon-list__name-button");
+  function createListItem(pokemon) {
+    //Create a colum for the grid
+    let listItem = document.createElement("div");
+    listItem.classList.add("col-12", "col-sm-6", "col-md-4", "col-lg-3");
 
-    // event listener to display information on click
+    // Create a card for each Pokemon
+    let nameCard = document.createElement("div");
+    nameCard.classList.add("card", "h-100", "text-center", "shadow-sm");
+
+    let cardBody = document.createElement("div");
+    cardBody.classList.add("card-body");
+
+    // Add Pokemon name as a button
+    let nameButton = document.createElement("div");
+    nameButton.textContent = pokemon.name;
+    nameButton.classList.add("btn", "btn-primary", "w-100");
+
+    // Event listener to display additional information on click
     nameButton.addEventListener("click", function () {
       pokemonRepository.loadDetails(pokemon)
         .then(function () {
@@ -25,7 +33,11 @@ const pokemonUI = (function () {
         });
     });
 
-    return nameButton;
+    cardBody.appendChild(nameButton);
+    nameCard.appendChild(cardBody);
+    listItem.appendChild(nameCard);
+
+    return listItem;
   }
 
   // Create and display modal
@@ -86,14 +98,6 @@ const pokemonUI = (function () {
     modalContainer.remove();
   }
 
-  // Render the Pokemon list in the UI
-  function populatePokemonList(pokemonList, listElement) {
-    listElement.innerHTML = "";
-    pokemonList.forEach(function (pokemon) {
-      let listItem = createListItem(pokemon);
-      listElement.appendChild(listItem);
-    });
-  }
 
   function showLoadingMessage() {
     const loadingMessage = document.createElement('div');
