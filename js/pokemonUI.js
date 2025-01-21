@@ -40,64 +40,18 @@ const pokemonUI = (function () {
     return listItem;
   }
 
-  // Create and display modal
+  // Create modal with Pokemon detials
   function showModal(pokemon) {
+    document.getElementById("pokemonName").textContent = pokemon.name;
+    document.getElementById("pokemonImg").src = pokemon.imgUrl;
+    document.getElementById("pokemonImg").alt = pokemon.name;
+    document.getElementById("pokemonType").textContent = `Type: ${pokemon.type.join(', ')}`;
+    document.getElementById("pokemonHeight").textContent = `Height: ${pokemon.height}m`;
 
-    // check if modal is already present
-    if (document.querySelector(".modal__container")) {
-      return;
-    }
-
-    //create modal container
-    let modalContainer = document.createElement("div");
-    modalContainer.classList.add("modal__container");
-
-    // Create modal content
-    let modalContent = document.createElement("div");
-    modalContent.classList.add("modal__content");
-
-    // Add close button
-    let modalCloseButton = document.createElement("button");
-    modalCloseButton.textContent = "Close";
-    modalCloseButton.classList.add("modal__close-button");
-    modalCloseButton.addEventListener("click", function () {
-      hideModal(modalContainer);
-    });
-
-    // Add Pokemon details to modal
-    modalContent.innerHTML += `
-      <h2>${pokemon.name}</h2>
-      <img src="${pokemon.imgUrl}" alt="${pokemon.name}">
-      <p>Type: ${pokemon.type.join(', ')}</p>
-      <p>Height: ${pokemon.height}m</p>`;
-
-    //Append close button and content to container
-    modalContent.appendChild(modalCloseButton);
-    modalContainer.appendChild(modalContent);
-
-    // Add modal content to modal container
-    document.body.appendChild(modalContainer);
-
-    // Add event listener to close modal pressing 'Esc'
-    document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") {
-        hideModal(modalContainer);
-        document.removeEventListener("keydown", onKeyPress);
-      }
-    });
-
-    // Add event listener to close modal when clicking outside of the modal content
-    modalContainer.addEventListener("click", function (event) {
-      if (!modalContent.contains(event.target)) {
-        hideModal(modalContainer);
-      }
-    });
+    // Display using Bootstrap's Js API
+    let pokemonModal = new bootstrap.Modal(document.getElementById("pokemonModal"));
+    pokemonModal.show();
   }
-
-  function hideModal(modalContainer) {
-    modalContainer.remove();
-  }
-
 
   function showLoadingMessage() {
     const loadingMessage = document.createElement('div');

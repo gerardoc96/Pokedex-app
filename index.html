@@ -20,6 +20,26 @@
   </header>
 
   <main>
+    <div class="modal fade" id="pokemonModal" tabindex="-1" aria-labelledby="pokemonModalLable" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="pokemonModalLable">Pokémon Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <img id="pokemonImg" src="https://placehold.co/100" alt="" class="img-fluid">
+            <h2 id="pokemonName"></h2>
+            <p id="pokemonType"></p>
+            <p id="pokemonHeight"></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="container my-4">
       <div id="pokemon-list" class="row gx-3 gy-3"></div>
     </div>
