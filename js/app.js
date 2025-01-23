@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   let pokemonListUI = document.getElementById("pokemon-list");
+  let searchform = document.querySelector('form[role="search"]');
+  let searchInput = searchform.querySelector('input[type="search"]');
 
   //Fetch pokemon from the repository and render them in UI
   pokemonRepository.loadList().then(function () {
@@ -7,34 +9,24 @@ document.addEventListener('DOMContentLoaded', function () {
     pokemonUI.populatePokemonList(allPokemon, pokemonListUI);
 
     //Search functionality
-    let searchform = document.querySelector('form[role="search"]');
     searchform.addEventListener('submit', function (event) {
       event.preventDefault();
-
-      // Making it case-insensitive
-      let searchInput = searchform.querySelector('input[type="search"]').value.toLowerCase();
-      let filteredPokemon = allPokemon.filter(function (pokemon) {
-        return pokemon.name.toLowerCase().includes(searchInput);
-      });
-      pokemonUI.populatePokemonList(filteredPokemon, pokemonListUI);
+      handleSearch(searchInput.value, allPokemon, pokemonListUI);
     });
 
     // Live search functionality
-    let searchInputLive = searchform.querySelector('input[type="search"]');
-    searchInputLive.addEventListener('input', function () {
-      let searchInput = searchInputLive.value.toLowerCase();
-      let filteredPokemon = allPokemon.filter(function (pokemon) {
-        return pokemon.name.toLowerCase().includes(searchInput);
-      });
-      pokemonUI.populatePokemonList(filteredPokemon, pokemonListUI);
+    searchInput.addEventListener('input', function () {
+      handleSearch(searchInput.value, allPokemon, pokemonListUI);
     });
-
 
   }).catch(function (error) {
     console.error('Error loading Pokemon:', error);
   });
-
 });
 
+function handleSearch(query, allPokemon, listElement) {
+  let filteredPokemon = pokemonRepository.filterPokemonByName(query);
+  pokemonUI.populatePokemonList(filteredPokemon, listElement);
+}
 
 

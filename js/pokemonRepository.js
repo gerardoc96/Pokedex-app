@@ -2,7 +2,7 @@ const pokemonRepository = (function () {
 
   const pokemonList = [];
 
-  const apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150'
+  const apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=250'
 
   // returns the list of all pokemon
   function getAll() {
@@ -14,21 +14,22 @@ const pokemonRepository = (function () {
     return response.json();
   }
 
+  // Centralized error log
+  function logError(e) {
+    console.error(e);
+  }
+
   // fetches and processes the list of Pokemon from the API
   function loadList() {
-    pokemonUI.showLoadingMessage();
     return fetch(apiUrl)
       .then(responseToJson)
-      .then(processPokemonList)
+      .then(function (json) {
+        json.results.forEach(addPokemonFromList);
+      })
       .catch(logError)
   }
 
-  function processPokemonList(json) {
-    pokemonUI.hideLoadingMessage();
-    json.results.forEach(addPokemonFromList);
-  }
-
-  // Extract and add Pokemon information to the repository
+  // Extract initial pokemon information
   function addPokemonFromList(item) {
     let pokemon = {
       name: item.name,
@@ -37,20 +38,13 @@ const pokemonRepository = (function () {
     add(pokemon);
   }
 
-  // Validation function for adding pokemon to the repository
+  // add pokemon informaton to the repository
   function add(pokemon) {
-
-    if (typeof pokemon === 'object' && 'name' in pokemon && 'detailsUrl' in pokemon) {
-      pokemonList.push(pokemon);
-
-    } else {
-      console.error('Invalid Pokémon object. Ensure it has the right properties.');
-    }
+    pokemonList.push(pokemon);
   }
 
   // Fetches and processes details for each Pokemon
   function loadDetails(pokemon) {
-    pokemonUI.showLoadingMessage();
     return fetch(pokemon.detailsUrl)
       .then(responseToJson)
       .then(function (details) {
@@ -61,27 +55,26 @@ const pokemonRepository = (function () {
 
   // Fetches the specific details for each Pokemon
   function processPokemonDetails(details, pokemon) {
-    pokemonUI.hideLoadingMessage();
     pokemon.imgUrl = details.sprites.front_default;
     pokemon.height = details.height;
-    pokemon.type = details.types.map(getPokemonType);
+    pokemon.type = details.types.map(function (typeInfo) {
+      return typeInfo.type.name;
+    });
   }
 
-  function getPokemonType(typeInfo) {
-    return typeInfo.type.name;
-  }
-
-  // Centralized error log
-  function logError(e) {
-    pokemonUI.hideLoadingMessage();
-    console.error(e);
+  //Filters pokemon by name for the search function
+  function filterPokemonByName(query) {
+    return pokemonList.filter(function (pokemon) {
+      return pokemon.name.toLowerCase().includes(query.toLowerCase())
+    });
   }
 
   return {
     add,
     getAll,
     loadList,
-    loadDetails
+    loadDetails,
+    filterPokemonByName
   };
 
 })();
