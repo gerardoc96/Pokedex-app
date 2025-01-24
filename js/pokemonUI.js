@@ -25,7 +25,7 @@ const pokemonUI = (function () {
 
   function createListItem(pokemon) {
     //Create a colum for the grid
-    let listItem = createElementWithClass('div', ["col-12", "col-sm-6", "col-md-4", "col-lg-3"]);
+    let listItem = createElementWithClass('div', ["col-12", "col-sm-6", "col-md-4", "col-lg-2"]);
 
     // Create a card for each Pokemon
     let nameCard = createElementWithClass('div', ["card", "text-center", "shadow-sm"]);

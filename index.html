@@ -13,15 +13,14 @@
 
 </head>
 
-<body>
+<body class="bg-dark" data-bs-theme="dark">
 
   <header>
-    <nav class="navbar fixed-top navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
+    <nav class="navbar fixed-top navbar-expand-lg bg-dark border-bottom">
       <div class="container justify-content-evenly">
-        <a class="navbar-brand" href="#">PokeDex</a>
-        <form class="d-flex" role="search">
+        <h1 class="navbar-brand">PokeDex</h1>
+        <form class="d-flex" role="search" aria-live="polite">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
         <a class="navbar-brand" href="https://pokeapi.co/" target="_blank">API</a>
       </div>
@@ -33,23 +32,23 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="pokemonModalLable">Pokémon Details</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h2 class="modal-title ps-5 ms-5" id="pokemonModalLable">Pokémon Details</h2>
+            <button type="button" class="btn-close pe-4" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body text-center">
             <img id="pokemonImg" src="https://placehold.co/100" alt="" class="img-fluid">
-            <h2 id="pokemonName"></h2>
+            <h3 id="pokemonName"></h3>
             <p id="pokemonType"></p>
             <p id="pokemonHeight"></p>
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer justify-content-evenly">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="container my-5">
+    <div class="container-fluid my-5">
       <div id="pokemon-list" class="row gy-2"></div>
     </div>
   </main>
@@ -65,7 +64,6 @@
   <script src="./js/pokemonRepository.js"></script>
   <script src="./js/pokemonUI.js"></script>
   <script src="./js/app.js"></script>
-
 </body>
 
 </html>

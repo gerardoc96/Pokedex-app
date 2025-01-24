@@ -8,12 +8,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let allPokemon = pokemonRepository.getAll();
     pokemonUI.populatePokemonList(allPokemon, pokemonListUI);
 
-    //Search functionality
-    searchform.addEventListener('submit', function (event) {
-      event.preventDefault();
-      handleSearch(searchInput.value, allPokemon, pokemonListUI);
-    });
-
     // Live search functionality
     searchInput.addEventListener('input', function () {
       handleSearch(searchInput.value, allPokemon, pokemonListUI);
